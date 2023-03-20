@@ -13,6 +13,7 @@ app.get("/", (req, res) => {
 // routes for authentication
 // http://localhost:5000/auth
 app.use('/auth',require('./auth'))
+app.use('/tweet',require('./tweet'))
 
 app.listen(port, () => {
   console.log("Server up at port ", port);

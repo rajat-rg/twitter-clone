@@ -145,6 +145,46 @@ router.post("/sign-up/resend", async (req, res) => {
     res.send({ message: "Internal server error", error, success: false });
   }
 });
+router.post(
+  "/login",
+  [
+    body("email").isEmail().withMessage("Provide a valid email"),
+    body("password")
+      .isLength({ min: 8 })
+      .withMessage("Password must be at least 8 chars long"),
+  ],
+  async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      success = false;
+      if (!email || !password) {
+        res.send({ message: "Empty email or password", success });
+      } else {
+        const u = await User.findOne({ email });
+        if (!u) {
+          res.send({ message: "User not found with this email", success });
+        } else {
+          const p = await compare(password, u.password);
+          if (p) {
+            const data = {
+              user: {
+                id: u.id,
+              },
+            };
+            const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+            success = true;
+            res.json({ success, authtoken, message: "login success" });
+          } else {
+            res.send({ message: "Wrong password" });
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      res.send({ message: "Internal server error", error, success: false });
+    }
+  }
+);
 router.get("/", (req, res) => {
   res.send("auth route");
 });
