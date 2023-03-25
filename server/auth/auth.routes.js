@@ -185,8 +185,10 @@ router.post(
     }
   }
 );
+
 router.get("/", (req, res) => {
   res.send("auth route");
 });
+
 
 module.exports = router;

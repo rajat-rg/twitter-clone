@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const tweetSchema = mongoose.Schema({
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   tweet: { type: String, required: true, maxLength: 280 },
   createdAt: { type: Date, required: true, default: Date.now() },
-  parentTweet: { type: Schema.Types.ObjectId, ref: "Tweet", required: false },
+  parentTweet: { type: mongoose.Schema.Types.ObjectId, ref: "Tweet", required: false },
   likes: { type: Number, default: 0 },
 });
 
